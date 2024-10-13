@@ -1,0 +1,289 @@
+<body>
+  <div class="titles">
+    <h1 class="main-title">sambennett.app</h1>
+    <h3 class="sub-title">coming soon</h3>
+  </div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r124/three.min.js"></script>
+<script id="vertexShader" type="x-shader/x-vertex">
+    void main() {
+        gl_Position = vec4( position * 1.0 , 1.0 );
+    }
+</script>
+<script id="fragmentShader" type="x-shader/x-fragment">
+    const int MAX_MARCHING_STEPS = 500;
+    const float MIN_DIST = 0.0;
+    const float MAX_DIST = 10.0;
+    const float EPSILON = 0.00001;
+    struct U_sphere {
+      vec3 position;
+      float radius;
+    };
+  
+    uniform vec2 u_resolution;
+
+    uniform U_sphere u_sphere[20];
+  
+    float sceneSDF(vec3 samplePoint) {
+      float m = 0.0;
+	    float p = 0.0;
+	    float dmin = 1e20;
+      float radiusMin = 1e20;
+		
+	    float h = 1.0; // track Lipschitz constant
+	
+	    for( int i=0; i<u_sphere.length(); i++ )
+	    {
+		    // bounding sphere for ball
+        float db = length(u_sphere[i].position - samplePoint );
+        if( db < u_sphere[i].radius ) { //inside sphere
+    		  float x = db/u_sphere[i].radius;
+    		  p += 1.0 - x*x*x*(x*(x*6.0-15.0)+10.0); // increase with the number of spheres containing the sample point
+	    	  m += 1.0;
+    		  h = max( h, 0.5333*u_sphere[i].radius );
+	      }
+	      else {
+    		  dmin = min( dmin, db - u_sphere[i].radius );
+    	  }
+	    }
+      float d = dmin + 0.1; //we force the entrance in the sphere for the next marching steps
+
+	    if( m>0.5 ) // if we are inside one or several spheres, we smooth d
+	    {
+		    float th = 0.2; //0.2
+		    d = h*abs(th-p);
+	    }
+	
+	    return d;
+    }
+    
+  vec3 norMetaBalls( vec3 pos )
+  {
+	  vec3 nor = vec3( 0.0, 0.0001, 0.0 );
+		
+	  for( int i=0; i<u_sphere.length(); i++ )
+	  {
+      float db = length(u_sphere[i].position - pos );
+		  float x = clamp( db/u_sphere[i].radius, 0.0, 1.0 );
+		  float p = x*x*(30.0*x*x - 60.0*x + 30.0);
+		  nor += normalize( pos - u_sphere[i].position ) * p / u_sphere[i].radius;
+	  }
+	
+	  return normalize( nor );
+  }
+
+  
+    float shortestDistanceToSurface(vec3 eye, vec3 marchingDirection, float start, float end) {
+      float depth = start;
+      for (int i = 0; i < MAX_MARCHING_STEPS; i++) {
+        float dist = sceneSDF(eye + depth * marchingDirection);
+        if (dist < EPSILON) {
+			    return depth;
+        }
+        depth += dist;
+        if (depth >= end) {
+          return end;
+        }
+      }
+      return end;
+    }
+  
+    vec3 rayDirection(float fieldOfView, vec2 size, vec2 fragCoord) {
+      vec2 xy = fragCoord - size / 2.0;
+      float z = size.y / tan(radians(fieldOfView) / 2.0);
+      return normalize(vec3(xy, -z));
+    }
+  
+    void main() {
+      vec3 dir = rayDirection(45.0, u_resolution.xy,gl_FragCoord.xy);
+      vec3 eye = vec3(0.0, 0.0, 5.0);
+      float dist = shortestDistanceToSurface(eye, dir, MIN_DIST, MAX_DIST);
+      vec3 nor = norMetaBalls(eye + dir*dist);
+      float lightAlign = dot(nor, vec3(0.0,0.0,1.0));
+      float col = (lightAlign > 0.4 ? 0.0 : 1.0) ;
+      
+      gl_FragColor =  vec4(vec3(dist > MAX_DIST - EPSILON ? 0.0 : col), 1);
+      //gl_FragColor =  dist/MAX_DIST * vec4(1.0, 1.0, 1.0, 1.0);
+      
+    }
+</script>
+<style>
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+.titles{
+  color : rgb(255,255,255);
+  position : absolute;
+  left:50%;
+  top:50%;
+  transform: translate(-50%, -50%);
+  font-family: Monospace;
+}
+
+.webgl{
+  position : absolute;
+  z-index: -1;
+}
+</style>
+
+<script>
+// TODO : follow mouse, thumbnail
+
+let screenSize, scene, renderer, camera, plane, material, uniforms;
+var spheres = [];
+var t;
+const NB_SPHERES = 20;
+let target = new THREE.Vector2(0,0);
+
+var followMouse = {
+  target : { x : 0, y : 0},
+  vel : 5,
+}
+
+uniforms = {
+    u_resolution: { type: "v2", value: new THREE.Vector2() },
+    u_sphere : {
+      value : []
+    }
+};
+
+init();
+tick();
+
+function init(){
+  // INIT TIME
+  t = {
+    current : new Date().getTime(),
+    previous : new Date().getTime(),
+    dT : 0,
+    elapsed : 0
+  }
+  
+  // INIT SPHERES
+  spheres.push({
+    position : new THREE.Vector3(0.0,0.0,0.0),
+    radius : 0.5,
+    vel : 5,
+    dir : new THREE.Vector2(0,0)
+  })
+  
+  spheres.push({
+    position : new THREE.Vector3(0.0,0.0,0.0),
+    radius : 0.35,
+    vel : 3.5,
+    dir : new THREE.Vector2(0,0)
+  })
+  
+  spheres.push({
+      position : new THREE.Vector3(0.4, -0.4 , 0),
+      radius : 0.3,
+      vel : 0.07,
+      dir : new THREE.Vector2(0,1)
+  })
+  
+  for(let i = 0; i<NB_SPHERES-3; i++){
+    spheres.push({
+      position : new THREE.Vector3((Math.random() * 2) - 1, -Math.random() * 5 - 3 , 0),
+      radius : Math.random() * 0.2 + 0.3,
+      vel : 0.04 + Math.random() * 0.1,
+      dir : new THREE.Vector2(0,1)
+    })
+  }
+  
+  // INIT RENDERER
+  screenSize = {x : window.innerWidth, y:window.innerHeight};
+  const aspect = window.innerWidth / window.innerHeight;
+  
+  scene = new THREE.Scene();
+  renderer = new THREE.WebGLRenderer();
+  renderer.setSize(screenSize.x, screenSize.y);
+  renderer.antialias = true;
+  document.body.appendChild( renderer.domElement );
+  
+  camera = new THREE.OrthographicCamera( -aspect * 0.5, aspect * 0.5, 0.5 / aspect, -0.5 / aspect, 0.1, 100 );
+  scene.add(camera);
+                          
+  const geometry = new THREE.PlaneGeometry( 1.98, 1.98); 
+  material = new THREE.ShaderMaterial( 
+    {
+		  uniforms: uniforms,
+			vertexShader: document.getElementById('vertexShader').textContent,
+			fragmentShader: document.getElementById('fragmentShader').textContent
+		} 
+  );
+  plane = new THREE.Mesh( geometry, material ); 
+  scene.add( plane );
+
+  camera.position.z = 1;
+  
+  uniforms.u_resolution.value.x = screenSize.x;
+  uniforms.u_resolution.value.y = screenSize.y;
+  uniforms.u_sphere.value = spheres;
+  
+  window.addEventListener('resize', onWindowResize );
+  window.addEventListener('pointermove', onPointerMove);
+  window.addEventListener('mouseout', onMouseOut);
+}
+
+function tick() {
+  t.previous = t.current;
+  t.current = new Date().getTime();
+  t.dT = (t.current - t.previous)/1000;
+  t.elapsed += t.dT;
+  
+  moveFollowMouseSphere(spheres[0]);
+  moveFollowMouseSphere(spheres[1]);
+  spheres.forEach((s) => moveRisingSphere(s));
+  
+	renderer.render( scene, camera );
+  
+	setTimeout(() => requestAnimationFrame(tick), (0.033 - t.dT) * 1000);
+}
+
+function moveFollowMouseSphere(s){
+  var dir = {x : followMouse.target.x * screenSize.x/screenSize.y - s.position.x, y : followMouse.target.y - s.position.y}
+  s.position.x += dir.x * s.vel * t.dT;
+  s.position.y += dir.y * s.vel * t.dT;
+}
+
+function moveRisingSphere(s){
+  s.position.x += s.vel * s.dir.x * t.dT;
+  s.position.y += s.vel * s.dir.y * t.dT;
+  
+  if(s.position.y - s.radius > 2)
+    s.position.y = -Math.random() * 5 - 6 ;
+}
+
+function onWindowResize() {
+  screenSize = {x : window.innerWidth, y:window.innerHeight};
+  uniforms.u_resolution.value.x = screenSize.x;
+  uniforms.u_resolution.value.y = screenSize.y;
+  const aspect = window.innerWidth / window.innerHeight;
+
+	camera.left = -aspect / 2;
+	camera.right = aspect / 2;
+	camera.top = 0.5 / aspect;
+	camera.bottom = -0.5 / aspect;
+	camera.updateProjectionMatrix();
+  
+	renderer.setSize( screenSize.x, screenSize.y );
+}
+
+function onPointerMove(e){
+  followMouse.target.x = e.x / screenSize.x * 2 - 1;
+  followMouse.target.y = - e.y / screenSize.y * 2 + 1;
+}
+
+function onMouseOut(){
+  followMouse.target.x = 0;
+  followMouse.target.y = 0;
+}
+
+function distance(v1, v2){
+  return  Math.sqrt((v1.x-v2.x)*(v1.x-v2.x) + (v1.y-v2.y)*(v1.y-v2.y));
+}
+
+</script>

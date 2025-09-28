@@ -1,115 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coming Soon</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sambennett.blog</title>
   <style>
-    * {
-      box-sizing: border-box;
+    body {
       margin: 0;
-      padding: 0;
-    }
-
-    body, html {
-      height: 100%;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: #0f0f0f;
-      color: #ffffff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
       text-align: center;
     }
 
-    .container {
-      max-width: 600px;
-      padding: 40px 20px;
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      flex-direction: column;
     }
 
-    h1 {
-      font-size: 3em;
-      margin-bottom: 20px;
+    .site-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
     }
 
-    p {
-      font-size: 1.2em;
-      margin-bottom: 30px;
-      color: #ccc;
+    .linkedin-button {
+      background-color: #0077b5;
+      color: white;
+      padding: 0.5rem 1rem;
+      text-decoration: none;
+      border-radius: 4px;
+      font-size: 0.9rem;
     }
 
-    .email-form {
+    .content {
+      padding: 2rem 1rem;
       display: flex;
       flex-direction: column;
-      gap: 10px;
-      max-width: 400px;
-      margin: 0 auto;
+      align-items: center;
+      gap: 3rem;
     }
 
-    .email-form input[type="email"] {
-      padding: 12px;
-      border: none;
-      border-radius: 4px;
-      font-size: 1em;
+    .photo-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
     }
 
-    .email-form button {
-      padding: 12px;
-      background-color: #ffffff;
-      color: #000;
-      border: none;
-      border-radius: 4px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s ease;
+    .photo-block img {
+      max-width: 100%;
+      height: auto;
+      width: 800px;
+      border: 2px solid #fff;
     }
 
-    .email-form button:hover {
-      background-color: #f0f0f0;
+    .photo-title {
+      font-size: 1.2rem;
+      max-width: 90%;
     }
 
-    .countdown {
-      font-size: 2em;
-      margin-top: 30px;
+    /* New featured section */
+    .featured-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1rem;
     }
 
-    @media (max-width: 500px) {
-      h1 {
-        font-size: 2em;
+    .featured-section img {
+      width: 300px;
+      max-width: 100%;
+      border: 2px solid #fff;
+    }
+
+    .featured-description {
+      max-width: 500px;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    @media (max-width: 600px) {
+      .featured-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .featured-description {
+        text-align: center;
       }
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>Coming Soon</h1>
-    <p>I'm working hard to finish this site. Stay tuned!</p>
 
-    <div class="countdown" id="countdown"></div>
+  <header class="featured-section">
+    <div class="site-title">Sambennett.blog</div>
+  </header>
+
+  <div class="featured-section">
+    <img src="profile.webp" alt="Featured Image">
+    <div class="featured-description">
+      <h2>Hi, I'm Sam</h2>
+      <p>
+        This page contains some of my favorate photos I've taken over the years. Feel free to use any of them for personal use.
+      </p>
+    </div>
   </div>
 
-  <script>
-    // Countdown timer to a specific date
-    const launchDate = new Date("2025-10-01T00:00:00").getTime();
+  <div class="content">
+    <div class="photo-block">
+      <img src="motorway.webp" alt="Tolworth, Greater London">
+      <div class="photo-title">Tolworth, Greater London</div>
+    </div>
+    <div class="photo-block">
+      <img src="vinyard.webp" alt="Photo 2">
+      <div class="photo-title">Dorking, Surrey</div>
+    </div>
+    <div class="photo-block">
+      <img src="heathrow.webp" alt="Photo 3">
+      <div class="photo-title">Egham, Surrey</div>
+    </div>
+  </div>
 
-    const countdown = document.getElementById("countdown");
-    const interval = setInterval(() => {
-      const now = new Date().getTime();
-      const distance = launchDate - now;
-
-      if (distance < 0) {
-        clearInterval(interval);
-        countdown.innerHTML = "We're live!";
-        return;
-      }
-
-      const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-      const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-      const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-      const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-      countdown.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
-    }, 1000);
-  </script>
 </body>
 </html>

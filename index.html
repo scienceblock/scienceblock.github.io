@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Sambennett.blog</title>
+
+  <!-- Bootstrap CSS (CDN) -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
   <style>
+    /* page base */
     body {
       margin: 0;
       background-color: #000;
@@ -77,7 +82,7 @@
       max-width: 90%;
     }
 
-    /* New featured section */
+    /* featured section (top image + text) */
     .featured-section {
       display: flex;
       flex-direction: row;
@@ -86,7 +91,7 @@
       gap: 2rem;
       flex-wrap: wrap;
       max-width: 1000px;
-      margin: 3rem auto;
+      margin: 3rem auto 1rem;
       padding: 0 1rem;
     }
 
@@ -102,6 +107,36 @@
       text-align: left;
     }
 
+    /* bootstrap card overrides to keep black & white look */
+    .bw-card {
+      background-color: #000; /* card background black */
+      color: #fff;
+      border: 2px solid #fff; /* white border */
+    }
+
+    .bw-card .card-img-top {
+      border-bottom: 2px solid #fff;
+      object-fit: cover;
+      height: 180px;
+    }
+
+    .bw-card .card-body {
+      background-color: transparent;
+      color: #fff;
+    }
+
+    .bw-card .btn-outline-light {
+      border-color: #fff;
+      color: #fff;
+    }
+
+    /* spacing for the card row container */
+    .cards-row {
+      max-width: 1100px;
+      margin: 2rem auto 3rem;
+      padding: 0 1rem;
+    }
+
     @media (max-width: 600px) {
       .featured-section {
         flex-direction: column;
@@ -110,6 +145,17 @@
 
       .featured-description {
         text-align: center;
+      }
+
+      .photo-block img {
+        width: 100%;
+        height: auto;
+        max-width: 100%;
+      }
+
+      .photo-portrait img {
+        height: auto;
+        width: 100%;
       }
     }
   </style>
@@ -120,42 +166,65 @@
     <div class="site-title">Sambennett.blog</div>
   </header>
 
+  <!-- Top featured image + description -->
   <div class="featured-section">
-    <img src="profile.webp" alt="Featured Image">
+    <img src="profile.jpg" alt="Featured Image">
     <div class="featured-description">
       <h2>Hi, I'm Sam</h2>
       <p>
-        This page contains some of my favorate photos I've taken over the years.
+        This page contains some of my favorite photos I've taken over the years.
       </p>
     </div>
   </div>
 
-  <div class="content">
-    <div class="photo-block">
-      <img src="motorway.webp" alt="Tolworth, Greater London">
-      <div class="photo-title">Tolworth, Greater London</div>
-    </div>
-    <div class="photo-block">
-      <img src="vinyard.webp" alt="Photo 2">
-      <div class="photo-title">Dorking, Surrey</div>
-    </div>
-    <div class="photo-block">
-      <img src="heathrow.webp" alt="Photo 3">
-      <div class="photo-title">Egham, Surrey</div>
-    </div>
-    <div class="photo-block">
-      <img src="bokeh.webp" alt="Photo 4">
-      <div class="photo-title">Richmond, London</div>
-    </div>
-    <div class="photo-block">
-      <img src="hawaii.webp" alt="Photo 5">
-      <div class="photo-title">Kaua'i, Hawaii</div>
-    </div>
-    <div class="photo-portrait">
-      <img src="kingston.webp" alt="Photo 6">
-      <div class="photo-title">Kingston Upon Thames, Greater London</div>
-    </div>
-  </div>
+  <!-- NEW: Bootstrap row of 3 cards (black & white style) -->
+  <div class="cards-row">
+    <div class="container">
+      <div class="row g-4">
+        <div class="col-12 col-md-4">
+          <div class="card bw-card h-100">
+            <img src="motorway.webp" class="card-img-top" alt="Tolworth, Greater London">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Photo Gallary</h5>
+              <p class="card-text">View a selection of the best photos I've taken over the years.</p>
+              <div class="mt-auto">
+                <a href="photos.html" class="btn btn-outline-light btn-sm">View</a>
+              </div>
+            </div>
+          </div>
+        </div>
 
+        <div class="col-12 col-md-4">
+          <div class="card bw-card h-100">
+            <img src="vinyard.webp" class="card-img-top" alt="Dorking, Surrey">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">Videos</h5>
+              <p class="card-text">Coming Soon</p>
+              <div class="mt-auto">
+    
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-4">
+          <div class="card bw-card h-100">
+            <img src="heathrow.webp" class="card-img-top" alt="Egham, Surrey">
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title">More</h5>
+              <p class="card-text">Coming Soon</p>
+              <div class="mt-auto">
+       
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div> <!-- /.row -->
+    </div> <!-- /.container -->
+  </div> <!-- /.cards-row -->
+
+  <!-- Bootstrap JS (Popper + Bootstrap) -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

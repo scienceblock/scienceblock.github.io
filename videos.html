@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sam Bennett</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: left;
+    }
+
+    .ml2 {
+      margin-left: 50px;
+    }
+
+    header {
+      padding: 2rem 1rem;
+      text-align: center;
+    }
+
+    .site-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    /* Big banner video */
+    .banner-video {
+      width: 100%;
+      max-height: 600px;
+      object-fit: cover;
+    }
+
+    /* Video grid */
+    .video-section {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem 1rem;
+      gap: 3rem;
+    }
+
+    .video-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      max-width: 1200px;
+    }
+
+    .video-grid video {
+      width: 350px;
+      max-width: 100%;
+      border-radius: 8px;
+    }
+
+    @media (max-width: 600px) {
+      .video-grid video {
+        width: 100%;
+      }
+    }
+  .video-item { text-align: center; max-width: 350px; }
+    .video-item h3 { margin: 0.5rem 0 0.25rem; }
+    .video-item p { margin: 0; font-size: 0.9rem; color: #ccc; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="site-title">Sambennett.blog</div>
+  </header>
+
+  <!-- Big banner video -->
+  <section style="text-align:left;">
+    <video class="banner-video" src="banner.mp4" controls autoplay muted loop></video>
+    <h2 class="ml2">Photographing Egham at Night</h2>
+    <p class="ml2">Sam looks for an interesting way to photograph dull suburban streets.</p>
+  </section>
+
+<!-- Smaller video section -->
+  <section class="video-section">
+    <h2>More Videos Coming Soon</h2>
+    <div class="video-grid">
+    </div>
+  </section>
+
+</body>
+</html>

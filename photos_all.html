@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sam Bennett</title>
+  <style>
+    body {
+      margin: 0;
+      background-color: #000;
+      color: #fff;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 2rem 1rem;
+      flex-direction: column;
+    }
+
+    .site-title {
+      font-size: 2rem;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .featured-section {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+      max-width: 1000px;
+      margin: 3rem auto;
+      padding: 0 1rem;
+    }
+
+    .featured-section img {
+      width: 250px;
+      max-width: 100%;
+      border: 2px solid #fff;
+    }
+
+    .featured-description {
+      max-width: 500px;
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    /* Grid of small photos */
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      padding: 2rem;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .photo-grid img {
+      width: 100%;
+      height: auto;
+      border: 2px solid #fff;
+    }
+
+    @media (max-width: 600px) {
+      .featured-section {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .featured-description {
+        text-align: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="featured-section">
+    <div class="site-title">Sambennett.blog</div>
+  </header>
+
+  <div class="featured-section">
+    <div class="featured-description">
+      <h2>All Images</h2>
+      <p>Don't worry, I've got more images for you to look through!</p>
+    </div>
+  </div>
+
+  <div class="photo-grid">
+    <img src="motorway.webp" alt="Tolworth, Greater London">
+    <img src="vinyard.webp" alt="Dorking, Surrey">
+    <img src="heathrow.webp" alt="Egham, Surrey">
+    <img src="windsor.jpg" alt="Windsor, Berkshire">
+    <img src="hawaii.webp" alt="Kaua'i, Hawaii">
+    <img src="viaduct.jpg" alt="Balcombe, Sussex">
+    <img src="staines.jpg" alt="Staines, Surrey">
+    <img src="thumbnails/moor.jpg" alt="Staines, Surrey">
+    <img src="thumbnails/2.jpg">
+    <img src="thumbnails/3.jpg">
+    <img src="thumbnails/4.jpg">
+    <img src="thumbnails/5.jpg">
+    <img src="thumbnails/6.jpg">
+    <img src="thumbnails/7.jpg">
+    <img src="thumbnails/8.jpg">
+    <img src="thumbnails/9.jpg">
+    <img src="thumbnails/10.jpg">
+  </div>
+
+</body>
+</html>

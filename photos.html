@@ -112,6 +112,24 @@
         text-align: center;
       }
     }
+
+    .view-more {
+      background-color: #000;     /* black background */
+      color: #fff;                /* white text */
+      border: 2px solid #fff;     /* white outline */
+      padding: 1rem 2rem;
+      border-radius: 6px;
+      font-size: 1rem;
+      cursor: pointer;
+    }
+
+    .view-more:hover {
+      background-color: #111;     /* slightly lighter black on hover (optional) */
+    }
+
+    .view-more:click {
+      background-color: #white;
+    }
   </style>
 </head>
 <body>
@@ -159,6 +177,9 @@
       <img src="staines.jpg" alt="Photo 6">
       <div class="photo-title">Staines, Surrey</div>
     </div>
+
+
+    <a href="photos_all.html"><button class="view-more">View More</button></a>
   </div>
 
 </body>

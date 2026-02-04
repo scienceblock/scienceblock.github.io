@@ -102,6 +102,67 @@
       font-size: 0.8rem;
       color: #666;
     }
+
+    .instagram-card {
+  max-width: 1100px;
+  max-width: 90%;
+  margin: 3rem auto;
+  padding: 0;
+  border: 2px solid #fff;
+  border-radius: 5px;
+  background-color: #000;
+  overflow: hidden; /* clips image to rounded corners */
+}
+
+.instagram-card-inner {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.instagram-card-image {
+  flex: 1 1 45%;
+  min-height: 300px;
+  background-size: cover;
+  background-position: center;
+}
+
+.instagram-card-content {
+  flex: 1 1 55%;
+  padding: 3rem;
+  text-align: left;
+}
+
+.instagram-card-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.instagram-card-content p {
+  font-size: 1.1rem;
+  color: #ccc;
+  margin-bottom: 2rem;
+}
+
+.instagram-card-content .btn {
+  font-size: 1.2rem;
+  padding: 0.75rem 2.5rem;
+}
+
+/* Mobile stack */
+@media (max-width: 768px) {
+  .instagram-card-inner {
+    flex-direction: column;
+  }
+
+  .instagram-card-image {
+    min-height: 220px;
+  }
+
+  .instagram-card-content {
+    text-align: center;
+  }
+}
+    
   </style>
 </head>
 
@@ -111,6 +172,32 @@
   <header class="featured-section">
     <div class="site-title">Sam Bennett</div>
   </header>
+
+<!-- Sam Bennett Instagram feature card -->
+<div class="instagram-card">
+  <div class="instagram-card-inner">
+
+    <!-- Left image -->
+    <div
+      class="instagram-card-image"
+      style="background-image: url('moor.jpg');"
+    ></div>
+
+    <!-- Right content -->
+    <div class="instagram-card-content">
+      <h2>Follow me on Instagram</h2>
+      <p>Get tips, behind-the-scenes and more</p>
+      <a
+        href="https://www.instagram.com/sciencebl0ck/"
+        target="_blank"
+        class="btn btn-primary"
+      >
+        Follow
+      </a>
+    </div>
+
+  </div>
+</div>
 
   <div class="featured-section">
     <div class="featured-description">
